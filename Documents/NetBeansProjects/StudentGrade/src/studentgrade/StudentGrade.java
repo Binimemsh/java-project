@@ -1,9 +1,9 @@
-
 package studentgrade;
 
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.io.*;
+
 public class StudentGrade {
     private static final String Fial_path= "Stud.txt";
     private static final ArrayList<StudentInfo> dataList= new ArrayList<>();
