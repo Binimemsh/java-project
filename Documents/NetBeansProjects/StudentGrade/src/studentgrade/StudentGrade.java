@@ -16,22 +16,23 @@ public class StudentGrade {
         System.out.println("====TO-DO MENU====");
         System.out.println("1. Add Information");
         System.out.println("2. List Student");
-        System.out.println("3. Exit");
+        System.out.println("3. delete student");
+        System.out.println("4. Exit");
         System.out.println("choose one of the above!");
         int choice = scanner.nextInt();
         scanner.nextLine();
         switch(choice){
             case 1 -> addInfo();
             case 2 -> viewAllStudent();
-            //case 3 -> loadData();
-            case 3 -> Exit();
+            case 3 -> deleteData();
+            case 4 -> Exit();
             default -> System.out.println("invalid choice! please Try again.");
         }
         }     
     }
     private static void addInfo(){
             System.out.println("\n=== Add Student Information ===");
-            System.out.print("if you don't have any data on the system. fill the following information!");
+            System.out.println("if you don't have any data on the system. fill the following information!");
             System.out.println("Type your full name. ");
             String Name= scanner.nextLine();
             
@@ -51,9 +52,26 @@ public class StudentGrade {
                System.out.println("No Student found.");
                return;
                }
-               for(StudentInfo student : dataList){
-                    System.out.println(student);
-               }
+               for(int i=0;i<dataList.size();i++){
+                  StudentInfo  student=dataList.get(i);
+                  System.out.println((i+1) + "." + student);
+            }
+    }
+    private static void deleteData(){
+               if(dataList.isEmpty()){
+                System.out.println(" There is no task yet.");
+                return;
+            }
+               viewAllStudent();
+               System.out.println("choose one you want to delete!");
+               int index= scanner.nextInt()-1; 
+            if(index >= 0 && index < dataList.size()){
+               StudentInfo removedStudent = dataList.remove(index);
+               System.out.println(removedStudent + " is deleted");
+               saveData();
+            }else{
+            System.out.println("invalid input!");
+            }
     }
     private static void saveData(){
       try{ BufferedWriter bw= new BufferedWriter(new FileWriter(Fial_path));
