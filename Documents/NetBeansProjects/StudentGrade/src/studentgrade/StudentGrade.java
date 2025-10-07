@@ -58,9 +58,10 @@ public class StudentGrade {
     private static void saveData(){
       try{ BufferedWriter bw= new BufferedWriter(new FileWriter(Fial_path));
             for(StudentInfo studentinfo:dataList){
-                 bw.write(studentinfo.getName() + ":-" + studentinfo.getID() + ":-" + ":-" + studentinfo.getCGPA());
+                 bw.write(studentinfo.getName() + ":-" + studentinfo.getID() +  ":-" + studentinfo.getCGPA());
                  bw.newLine();
                 }
+            bw.close();
             System.out.println("Data saved succeccfully!");
       }
       catch(IOException e)
