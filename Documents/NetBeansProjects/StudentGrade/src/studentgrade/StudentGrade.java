@@ -41,8 +41,8 @@ public class StudentGrade {
             String ID= scanner.nextLine();
             
             System.out.print("Type your CGPA. ");
-            float CGPA= scanner.nextFloat();
-            scanner.nextLine();
+            float CGPA= Grade();
+            
             
             dataList.add(new StudentInfo(Name, ID, CGPA));
             System.out.println(Name + " information is successfully add");
@@ -137,4 +137,65 @@ public class StudentGrade {
         System.out.println("Goodbye...");
         System.exit(0);
     }
+       private static float Grade(){
+             float Sum=0;
+           int totalCHs=0;
+            System.out.print("How many course do you have? ");
+            int course= scanner.nextInt();
+            for(int i=1;i<=course;i++){
+                 System.out.print("Subject:- ");
+                 String subject = scanner.nextLine();
+                 scanner.nextLine();
+                 System.out.print("Grade:- ");
+                 String Grade= scanner.nextLine();
+                 System.out.print("Credit Hs:- ");
+                 int CHs= scanner.nextInt();
+                 float GradeinFloat=0;
+                 
+                 switch(Grade){
+                     case "A+":
+                         GradeinFloat=4;
+                         break;
+                     case "A":
+                         GradeinFloat=4.0f;
+                         break;
+                     case "A-":
+                         GradeinFloat=3.75f;
+                         break;
+                     case "B+":
+                         GradeinFloat=3.5f;
+                         break;
+                     case "B":
+                         GradeinFloat=3.0f;
+                         break;
+                     case "B-":
+                         GradeinFloat=2.75f;
+                         break;
+                     case "C+":
+                         GradeinFloat=2.5f;
+                         break;
+                     case "C":
+                         GradeinFloat= 2.0f;
+                         break;
+                     case "C-":
+                         GradeinFloat=1.75f;
+                         break;
+                     case "D":
+                         GradeinFloat=1;
+                         break;
+                     case "F":
+                         GradeinFloat=0.0f;
+                         break;
+                     default:
+                         System.out.println("invalid input. please try again! ");
+                 }
+                         totalCHs+= CHs;
+                        float  CHsByGrade = GradeinFloat * CHs;
+                          Sum += CHsByGrade;
+                          CHsByGrade=0;
+            }
+            float CGPA=Sum/totalCHs;
+            return CGPA;
+            
+       }
 }
