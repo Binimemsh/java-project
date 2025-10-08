@@ -121,7 +121,7 @@ public class StudentGrade {
                      float CGPA = Float.parseFloat(parts[2]);
                 dataList.add(new StudentInfo(parts[0], parts[1], CGPA));
             } else{ 
-                  System.out.println("Skipping invalid task line:"+ line);
+                  System.out.println("Skipping invalid info line:"+ line);
                 }
             }
             System.out.println("Data loaded successfully! " + dataList.size() + " students found.");
