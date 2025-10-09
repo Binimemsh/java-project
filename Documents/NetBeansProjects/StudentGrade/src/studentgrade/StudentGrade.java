@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.io.*;
 
 public class StudentGrade {
-    private static final String Fial_path= "Stud.txt";
+    private static final String File_path= "Stud.txt";
     private static final ArrayList<StudentInfo> dataList= new ArrayList<>();
     private static final Scanner scanner = new Scanner(System.in);
     public static void main(String[] args) {
@@ -45,6 +45,7 @@ public class StudentGrade {
             
             
             dataList.add(new StudentInfo(Name, ID, CGPA));
+            saveData();
             System.out.println(Name + " information is successfully add");
     }
     private static void viewAllStudent(){
@@ -60,7 +61,7 @@ public class StudentGrade {
     }
     private static void deleteData(){
                if(dataList.isEmpty()){
-                System.out.println(" There is no task yet.");
+                System.out.println(" There is no student to delete.");
                 return;
             }
                viewAllStudent();
@@ -94,7 +95,7 @@ public class StudentGrade {
               }
      }
     private static void saveData(){
-      try{ BufferedWriter bw= new BufferedWriter(new FileWriter(Fial_path));
+      try{ BufferedWriter bw= new BufferedWriter(new FileWriter(File_path));
             for(StudentInfo studentinfo:dataList){
                  bw.write(studentinfo.getName() + ":-" + studentinfo.getID() +  ":-" + studentinfo.getCGPA());
                  bw.newLine();
@@ -108,18 +109,20 @@ public class StudentGrade {
         }
     }
     private static void loadData(){
-        File file = new File(Fial_path);
+        File file = new File(File_path);
         if(!file.exists()){
             System.out.println("No existing data file found. Starting fresh.");
             return;
         }
-        try(BufferedReader br= new BufferedReader(new FileReader(Fial_path))){
+        try(BufferedReader br= new BufferedReader(new FileReader(File_path))){
             String line;
             while((line = br.readLine()) != null) {
                 String[] parts = line.split(":-",3);
                 if (parts.length == 3){
-                     float CGPA = Float.parseFloat(parts[2]);
-                dataList.add(new StudentInfo(parts[0], parts[1], CGPA));
+                    try{ float CGPA = Float.parseFloat(parts[2]);
+                dataList.add(new StudentInfo(parts[0], parts[1], CGPA));}catch(NumberFormatException e){
+                    System.out.println("invalid CGPA value for :  " + parts[0]);
+                }
             } else{ 
                   System.out.println("Skipping invalid info line:"+ line);
                 }
@@ -145,57 +148,41 @@ public class StudentGrade {
             for(int i=1;i<=course;i++){
                  System.out.print("Subject:- ");
                  String subject = scanner.nextLine();
-                 scanner.nextLine();
+                 
+                 //scanner.nextLine();
                  System.out.print("Grade:- ");
-                 String Grade= scanner.nextLine();
+                 String Grade= scanner.nextLine().trim().toUpperCase();
+                 
                  System.out.print("Credit Hs:- ");
                  int CHs= scanner.nextInt();
-                 float GradeinFloat=0;
+                 scanner.nextLine();
                  
-                 switch(Grade){
-                     case "A+":
-                         GradeinFloat=4;
-                         break;
-                     case "A":
-                         GradeinFloat=4.0f;
-                         break;
-                     case "A-":
-                         GradeinFloat=3.75f;
-                         break;
-                     case "B+":
-                         GradeinFloat=3.5f;
-                         break;
-                     case "B":
-                         GradeinFloat=3.0f;
-                         break;
-                     case "B-":
-                         GradeinFloat=2.75f;
-                         break;
-                     case "C+":
-                         GradeinFloat=2.5f;
-                         break;
-                     case "C":
-                         GradeinFloat= 2.0f;
-                         break;
-                     case "C-":
-                         GradeinFloat=1.75f;
-                         break;
-                     case "D":
-                         GradeinFloat=1;
-                         break;
-                     case "F":
-                         GradeinFloat=0.0f;
-                         break;
-                     default:
+                
+                 
+                 float GradeinFloat=switch(Grade){
+                     case "A+","A"->4.0f;
+                     case "A-" -> 3.75f;
+                     case "B+" -> 3.5f;
+                     case "B" -> 3.0f;
+                     case "B-" -> 2.75f;
+                     case "C+" -> 2.5f;
+                     case "C" ->2.0f;
+                     case "C-" -> 1.75f;
+                     case "D" -> 1;
+                     case "F" -> 0.0f;
+                     default -> {
                          System.out.println("invalid input. please try again! ");
-                 }
+                         i--;
+                         yield 0f;
+                     }
+                 };
                          totalCHs+= CHs;
-                        float  CHsByGrade = GradeinFloat * CHs;
-                          Sum += CHsByGrade;
-                          CHsByGrade=0;
+                        //float  CHsByGrade = GradeinFloat * CHs;
+                          Sum += GradeinFloat * CHs;
+                          //CHsByGrade=0;
             }
-            float CGPA=Sum/totalCHs;
-            return CGPA;
+           // float CGPA=Sum/totalCHs;
+            return (totalCHs == 0)? 0 : Sum / totalCHs;
             
        }
 }
